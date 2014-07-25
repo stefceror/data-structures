@@ -4,12 +4,43 @@ var makeLinkedList = function(){
   list.tail = null;
 
   list.addToTail = function(value){
+    var newNode = makeNode(value);
+
+    // If tail does exist, set node.next to newNode
+    if(list.tail !== null) {
+      list.tail.next = newNode;
+    }
+
+    // If head does NOT exist, set head to newNode
+    if(list.head === null) {
+      list.head = newNode;
+    }
+
+    list.tail = newNode;
   };
 
   list.removeHead = function(){
+    var returnValue = list.head.value;
+
+    if (list.head.next) {
+      list.head = list.head.next;
+    }
+
+    return returnValue;
   };
 
   list.contains = function(target){
+    var currentNode = list.head;
+    var targetFound = false;
+
+    while(currentNode && !targetFound) {
+      if(currentNode.value === target) {
+        targetFound = true;
+      }
+      currentNode = currentNode.next;
+    }
+
+    return targetFound;
   };
 
   return list;
@@ -26,4 +57,7 @@ var makeNode = function(value){
 
 /*
  * Complexity: What is the time complexity of the above functions?
+ * addToTail: O(1)
+ * removeHead: O(1)
+ * contains: O(n)
  */
