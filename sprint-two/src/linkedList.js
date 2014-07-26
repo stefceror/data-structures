@@ -22,8 +22,15 @@ var makeLinkedList = function(){
   list.removeHead = function(){
     var returnValue = list.head.value;
 
+    // If there are more elements in list, move
+    // head pointer along.
     if (list.head.next) {
       list.head = list.head.next;
+    // If there is no next element, reset list
+    // to empty.
+    } else {
+      list.head = null;
+      list.tail = null;
     }
 
     return returnValue;

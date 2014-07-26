@@ -7,9 +7,13 @@ var makeSet = function(){
 var setPrototype = {};
 
 setPrototype.add = function(item){
+  // Create storage element if it doesn't exist.
   if(this._storage === undefined) {
     this._storage = [];
   }
+
+  // Push the item if it isn't already in
+  // the set.
   if(!this.contains(item)) {
     this._storage.push(item);
   }
@@ -20,9 +24,11 @@ setPrototype.contains = function(item){
 };
 
 setPrototype.remove = function(item){
+  // Find item in set, and remove it if found.
   for(var i = 0; i < this._storage.length; i++) { // O(n)
     if(this._storage[i] === item) {
       this._storage.splice(i, 1); // Splice is O(n)
+      return;
     }
   }
 };

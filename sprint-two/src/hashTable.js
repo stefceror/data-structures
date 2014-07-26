@@ -13,12 +13,14 @@ HashTable.prototype.insert = function(key, value){
 
   var bucket = this._storage.get(hash);
 
+  // If the key exists, its value is updated.
   if(this.retrieve(key)) {
     _.each(bucket, function(item, index, bucket){
       if(item[0] === key){
         item[1] = value;
       }
     });
+  // Otherwise, just insert tuple.
   } else {
     var keyValPair = [key, value];
     bucket.push(keyValPair);
