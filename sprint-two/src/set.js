@@ -20,9 +20,9 @@ setPrototype.contains = function(item){
 };
 
 setPrototype.remove = function(item){
-  for(var i = 0; i < this._storage.length; i++) {
+  for(var i = 0; i < this._storage.length; i++) { // O(n)
     if(this._storage[i] === item) {
-      this._storage.splice(i, 1);
+      this._storage.splice(i, 1); // Splice is O(n)
     }
   }
 };
@@ -31,5 +31,5 @@ setPrototype.remove = function(item){
  * Complexity: What is the time complexity of the above functions?
  * add: O(1)
  * contains: O(n) because one for loop exists in _.contains
- * remove: O(n)
+ * remove: O(n^2)
  */
