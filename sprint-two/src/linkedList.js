@@ -4,50 +4,46 @@ var makeLinkedList = function(){
   list.tail = null;
 
   list.addToTail = function(value){
+    //create new node at tail
     var newNode = makeNode(value);
-
-    // If tail does exist, set node.next to newNode
-    if(list.tail !== null) {
-      list.tail.next = newNode;
+    if(this.tail !== null){
+      this.tail.next = newNode;
     }
-
-    // If head does NOT exist, set head to newNode
-    if(list.head === null) {
-      list.head = newNode;
+    this.tail = newNode;
+    //if head null, set to node
+    if(this.head === null){
+      this.head = newNode;
     }
-
-    list.tail = newNode;
   };
 
   list.removeHead = function(){
-    var returnValue = list.head.value;
-
-    // If there are more elements in list, move
-    // head pointer along.
-    if (list.head.next) {
-      list.head = list.head.next;
-    // If there is no next element, reset list
-    // to empty.
-    } else {
-      list.head = null;
-      list.tail = null;
+    //save old head;
+    var oldHead= this.head;
+    //set head to next item in list if it exists
+    if(oldHead.next){
+      this.head = oldHead.next;
+    //if not, set list to be empty
+    } else{
+      this.head = null;
+      this.tail = null;
     }
-
-    return returnValue;
+    return oldHead.value; 
   };
 
   list.contains = function(target){
-    var currentNode = list.head;
-    var targetFound = false;
-
-    while(currentNode && !targetFound) {
-      if(currentNode.value === target) {
-        targetFound = true;
+    //start at head
+    var currNode = this.head;
+    //check each node that exists
+    while(currNode){
+      if(currNode.value === target){
+        //if target return true
+        return true;
+      //if not found return false
+      } else {
+        currNode = currNode.next;
       }
-      currentNode = currentNode.next;
     }
-
-    return targetFound;
+    return false;
   };
 
   return list;
@@ -64,7 +60,4 @@ var makeNode = function(value){
 
 /*
  * Complexity: What is the time complexity of the above functions?
- * addToTail: O(1)
- * removeHead: O(1)
- * contains: O(n)
  */

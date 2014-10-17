@@ -3,63 +3,57 @@ var HashTable = function(){
   this._storage = makeLimitedArray(this._limit);
 };
 
-HashTable.prototype.insert = function(key, value){
-  var hash = getIndexBelowMaxForKey(key, this._limit);
-
-  // Make a bucket if one doesn't exist.
-  if(this._storage.get(hash) === undefined){
-    this._storage.set(hash, []);
+HashTable.prototype.insert = function(k, v){
+  var i = getIndexBelowMaxForKey(k, this._limit);
+  //if there is no bucket
+  var bucket = this._storage.get(i);
+  if(bucket === undefined){
+    //create one
+    bucket = [];
+    this._storage.set(i,bucket);
   }
-
-  var bucket = this._storage.get(hash);
-
-  // If the key exists, its value is updated.
-  if(this.retrieve(key)) {
-    _.each(bucket, function(item, index, bucket){
-      if(item[0] === key){
-        item[1] = value;
-      }
-    });
-  // Otherwise, just insert tuple.
-  } else {
-    var keyValPair = [key, value];
-    bucket.push(keyValPair);
+  for(var j = 0; j < bucket.length; j++){
+  //if key already exists
+    if(bucket[j][0] === k){
+    //update
+      bucket[j][1]=v;
+      return;
+    }
   }
+    //else add tuple
+      bucket.push( [k,v] );
 };
 
-HashTable.prototype.retrieve = function(key){
-  var hash = getIndexBelowMaxForKey(key, this._limit);
-  var bucket = this._storage.get(hash);
-  var value;
-
-  // Check each item in bucket to see if key matches.
-  _.each(bucket, function(item){
-    if(item[0] === key){
-      value = item[1];
+HashTable.prototype.retrieve = function(k){
+  var i = getIndexBelowMaxForKey(k, this._limit);
+  //go to bucket at i
+  var bucket = this._storage.get(i);
+  //search for key
+  for (var j = 0; j < bucket.length; j++){
+    if(bucket[j][0] === k){
+    //return value
+      return bucket[j][1]
     }
-  });
+  }
 
-  return value;
 };
 
-HashTable.prototype.remove = function(key){
-  var hash = getIndexBelowMaxForKey(key, this._limit);
-  var bucket = this._storage.get(hash);
-
-  // Find appropriate key and set value to null.
-  _.each(bucket, function(item, index, bucket){
-    if(item[0] === key){
-      item[1] = null;
+HashTable.prototype.remove = function(k){
+  var i = getIndexBelowMaxForKey(k, this._limit);
+  //go to bucket at i
+  var bucket = this._storage.get(i);
+  //search for key
+  for (var j = 0; j < bucket.length; j++){
+    if(bucket[j][0] === k){
+      //splice out
+      bucket[j][1] = null;
+      return;
     }
-  });
+  }
 };
 
 
 
 /*
  * Complexity: What is the time complexity of the above functions?
- * insert: O(1); this._storage.set and .get are O(1), too.
- * retrieve: O(1) even though there is a for loop with _.each, number
- *           of elements in that bucket is insignificant compared to n.
- * remove: O(1) for the same reasons as retrieve.
  */
